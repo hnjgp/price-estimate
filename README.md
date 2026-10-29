@@ -88,7 +88,8 @@ on a laptop CPU with `python scripts/benchmark.py --size 200`. MAE is the mean a
 | Linear regression on 3 features | $92.31 ± 13.68 | 1.04 | 17% | 24% |
 | Bag-of-words + linear regression | $79.63 ± 11.76 | 1.31 | 39% | 44% |
 | XGBoost on bag-of-words | $74.32 ± 11.09 | 0.95 | 46% | 44% |
-| **Random forest on bag-of-words** | **$71.08 ± 11.63** | **0.79** | **45%** | **49%** |
+| Random forest on bag-of-words | $71.08 ± 11.63 | 0.79 | 45% | 49% |
+| **Small residual neural network** | **$72.16 ± 13.99** | **0.73** | **30%** | **54%** |
 
 What the numbers say:
 - Text matters far more than structured features: moving from weight and length to the words of the
@@ -96,6 +97,11 @@ What the numbers say:
 - Random forest and XGBoost overlap within their confidence intervals, so on 200 items neither is a clear
   winner. On the full 800k dataset the course found XGBoost ahead ($68 vs $72). With only 20k training rows,
   1,000 boosting rounds are probably overfitting.
+- The neural network (small CPU version: 4 layers, 512 wide, 3.6M parameters, 3 epochs,
+  `python scripts/train_dnn.py --epochs 3 --hidden 512 --layers 4`) ties the random forest on MAE but has
+  the best RMSLE and hit rate. It is trained on log-prices, so it is accurate in *relative* terms on most
+  items but misses some expensive ones, which pulls its R² down. Validation error was still falling after
+  epoch 3 ($83 → $80 → $76), so it is under-trained; the full-size network (10 layers, 4096 wide) needs a GPU.
 - The bag-of-words linear model has a decent MAE but the worst RMSLE: it makes large relative errors
   on cheap items, which is why reporting more than one metric is useful.
 
@@ -111,7 +117,7 @@ Measured on the full dataset with the course's own setup. They show where the st
 | GPT-5.1 (zero-shot) | $45 |
 | Llama 3.2 3B, QLoRA fine-tuned (full data) | $40 |
 
-Next steps for this repo: train the neural network (`scripts/train_dnn.py`) and add the frontier-model and
+Next steps for this repo: train the full-size neural network on a GPU and add the frontier-model and
 RAG rows to my own table.
 
 ## Project structure
