@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "price-estimate"
+version = "0.1.0"
+description = "Estimate a product's price from its text description, then use that estimator inside an agent system that finds underpriced online deals."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Hootan Seifi", email = "hootanseifi90@gmail.com" }]
+dependencies = [
+    "pydantic>=2.6",
+    "python-dotenv>=1.0",
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scikit-learn>=1.4",
+    "requests>=2.31",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+data = ["datasets>=2.19", "huggingface_hub>=0.23", "groq>=0.9", "litellm>=1.40"]
+ml = ["torch>=2.2", "xgboost>=2.0", "joblib>=1.3"]
+rag = ["chromadb>=0.5", "sentence-transformers>=3.0", "openai>=1.50"]
+agents = ["feedparser>=6.0", "beautifulsoup4>=4.12", "openai>=1.50", "anthropic>=0.34", "modal>=0.64"]
+app = ["fastapi>=0.110", "uvicorn>=0.29", "gradio>=4.40", "plotly>=5.20"]
+finetune = ["transformers>=4.44", "peft>=0.12", "trl>=0.10", "bitsandbytes>=0.43", "accelerate>=0.33"]
+dev = ["pytest>=8.0", "ruff>=0.5", "httpx>=0.27", "fastapi>=0.110"]
+all = ["price-estimate[data,ml,rag,agents,app]"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
