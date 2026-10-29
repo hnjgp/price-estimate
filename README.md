@@ -75,24 +75,44 @@ Compared with the course notebooks, this version:
 
 ## Results
 
-These are the reference numbers published with the course, measured on its 200-item test set. They
-show the scale of the gap between approaches. **They are not my measurements.** Run
-`scripts/benchmark.py` to produce your own table in `reports/benchmark.md`.
+### My measurements (classic baselines)
+
+Run on the lite dataset (20,000 training items) and evaluated on the same 200 test items for every model,
+on a laptop CPU with `python scripts/benchmark.py --size 200`. MAE is the mean absolute error in dollars,
+± the 95% confidence interval. "Hits" is the share of guesses within $40 or 20% of the true price.
+
+| Model | MAE | RMSLE | R² | Hits |
+|---|---|---|---|---|
+| Random guess ($1 to $1000) | $382.08 ± 37.57 | 2.04 | -897% | 11% |
+| Constant (training mean) | $106.08 ± 14.41 | 1.15 | 0% | 19% |
+| Linear regression on 3 features | $92.31 ± 13.68 | 1.04 | 17% | 24% |
+| Bag-of-words + linear regression | $79.63 ± 11.76 | 1.31 | 39% | 44% |
+| XGBoost on bag-of-words | $74.32 ± 11.09 | 0.95 | 46% | 44% |
+| **Random forest on bag-of-words** | **$71.08 ± 11.63** | **0.79** | **45%** | **49%** |
+
+What the numbers say:
+- Text matters far more than structured features: moving from weight and length to the words of the
+  description cuts the error by about $13, and tree models cut it by another $8.
+- Random forest and XGBoost overlap within their confidence intervals, so on 200 items neither is a clear
+  winner. On the full 800k dataset the course found XGBoost ahead ($68 vs $72). With only 20k training rows,
+  1,000 boosting rounds are probably overfitting.
+- The bag-of-words linear model has a decent MAE but the worst RMSLE: it makes large relative errors
+  on cheap items, which is why reporting more than one metric is useful.
+
+### Reference results from the course (not my measurements)
+
+Measured on the full dataset with the course's own setup. They show where the stronger models land.
 
 | Model | Mean absolute error |
 |---|---|
-| Constant (training mean) | $106 |
-| Linear regression on 3 features | $102 |
-| Bag-of-words + linear regression | $77 |
-| Random forest | $72 |
-| XGBoost | $68 |
+| XGBoost (full data) | $68 |
 | GPT-4.1 nano (zero-shot) | $63 |
 | Deep residual neural network | $46 |
 | GPT-5.1 (zero-shot) | $45 |
 | Llama 3.2 3B, QLoRA fine-tuned (full data) | $40 |
 
-The main lesson: a 3B open model fine-tuned on in-domain data can beat a much larger frontier model on
-this narrow task, and a well-built neural network on bag-of-words gets close to both.
+Next steps for this repo: train the neural network (`scripts/train_dnn.py`) and add the frontier-model and
+RAG rows to my own table.
 
 ## Project structure
 
