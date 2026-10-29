@@ -70,9 +70,7 @@ class Settings:
     memory_file: Path = field(default_factory=lambda: Path(os.getenv("MEMORY_FILE", "memory.json")))
 
     # Agent behaviour
-    deal_threshold: float = field(
-        default_factory=lambda: float(os.getenv("DEAL_THRESHOLD", "50"))
-    )
+    deal_threshold: float = field(default_factory=lambda: float(os.getenv("DEAL_THRESHOLD", "50")))
 
     def dataset_name(self, kind: str = "items", owner: str | None = None) -> str:
         """Return e.g. ``ed-donner/items_lite`` for the configured mode."""
