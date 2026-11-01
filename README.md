@@ -2,7 +2,7 @@
 
 **Predict what a product costs from its text description, then use that predictor inside a team of AI agents that finds online deals selling well below their true value.**
 
-[![CI](https://github.com/hnjgp/price-estimate/actions/workflows/ci.yml/badge.svg)](https://github.com/hnjgp/price-estimate/actions/workflows/ci.yml)
+[![CI](https://github.com/hootanseifi/price-estimate/actions/workflows/ci.yml/badge.svg)](https://github.com/hootanseifi/price-estimate/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -140,7 +140,7 @@ tests/                   offline test suite
 ## Quick start
 
 ```bash
-git clone https://github.com/hnjgp/price-estimate.git
+git clone https://github.com/hootanseifi/price-estimate.git
 cd price-estimate
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -e ".[all,dev]"
@@ -203,4 +203,4 @@ curl -X POST localhost:8000/predict -H "content-type: application/json" \
 
 ## Author
 
-**Hootan Seifi**, [GitHub @hnjgp](https://github.com/hnjgp)
+**Hootan Seifi**, [GitHub @hootanseifi](https://github.com/hootanseifi)
